@@ -6,39 +6,70 @@ ULRLDLLURDRRUULRDUDDURDDDLRRRURLDRUDDLUDDDLLLRDLRLLRRUUDRRDRUULLLULULUUDRRRDRDRU
 
 input = input.split("\n");
 
-var keypad = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9]
-];
+var keypad1 = {
+  layout: [
+    ["1", "2", "3"],
+    ["4", "5", "6"],
+    ["7", "8", "9"]
+  ],
+  start: {x: 1, y: 1}
+}
+
+var keypad2 = {
+  layout: [
+    [null, null, "1", null, null],
+    [null, "2", "3", "4", null],
+    ["5", "6", "7", "8", "9"],
+    [null, "A", "B", "C", null],
+    [null, null, "D", null, null]
+  ],
+  start: {x: 2, y: 0}
+};
 
 var position = {x: 1, y: 1};
 
-input.map(function(inputString) {
-  for(var i = 0; i < inputString.length; i++)
-  {
-    var axis;
-    var delta;
-    switch(inputString[i])
+function runKeypad(keypad)
+{
+  return input.map(function(inputString) {
+    var letter;
+    for(var i = 0; i < inputString.length; i++)
     {
-      case "U":
-        axis = "y";
-        delta = -1;
-        break;
-      case "D":
-        axis = "y";
-        delta = 1;
-        break;
-      case "L":
-        axis = "x";
-        delta = -1;
-        break;
-      case "R":
-        axis = "x";
-        delta = 1;
-        break;
+      var axis;
+      var delta;
+      switch(inputString[i])
+      {
+        case "U":
+          axis = "y";
+          delta = -1;
+          break;
+        case "D":
+          axis = "y";
+          delta = 1;
+          break;
+        case "L":
+          axis = "x";
+          delta = -1;
+          break;
+        case "R":
+          axis = "x";
+          delta = 1;
+          break;
+      }
+      
+      var potentialPosition = { x: position.x, y: position.y };
+      potentialPosition[axis] = position[axis] + delta;
+      
+      var row = keypad.layout[potentialPosition.y];
+      var column = row && row[potentialPosition.x];
+      if(typeof(column) === "string")
+      {
+        letter = column;
+        position = potentialPosition;
+      }
     }
-    position[axis] = Math.min(2, Math.max(0, position[axis] + delta));
-  }
-  return keypad[position.y][position.x];
-})
+    return letter;
+  }).join(", ");
+}
+
+console.log("first: " + runKeypad(keypad1));
+console.log("second: " + runKeypad(keypad2));
