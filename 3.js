@@ -1,4 +1,4 @@
-`    4   21  894
+var parsed = `    4   21  894
   419  794  987
   424  797  125
   651  305  558
@@ -1916,9 +1916,34 @@
       .map(function(side) {
         return parseInt(side);
       });
-  })
-  .filter(function(triangle) {
-    triangle.sort(function(a, b) { return a - b; });
-    return triangle[0] + triangle[1] > triangle[2];
-  })
-  .length;
+  });
+
+var verticals = [];
+
+for (var i = 0; i < (parsed.length / 3); i++)
+{
+  var start = i * 3;
+  for (var j = 0; j < 3; j++)
+  {
+    var triangle = [];
+    for(k = 0; k < 3; k++)
+    {
+      triangle.push(parsed[start + k][j])
+    }
+    verticals.push(triangle);
+  }
+}
+
+function doIt(name, set) {
+  console.log(name + ": " +
+    set
+      .filter(function(triangle) {
+        triangle.sort(function(a, b) { return a - b; });
+        return triangle[0] + triangle[1] > triangle[2];
+      })
+      .length
+  )
+}
+
+doIt("horizontal", parsed);
+doIt("vertical", verticals);
