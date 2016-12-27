@@ -1076,8 +1076,8 @@ data.split("\n").forEach((word) => {
     console.error("Broken :'( " + word);
   }
   
-  var letters = parts[1];
-  letters = letters.split("-").join("");
+  var originalLetters = parts[1];
+  var letters = originalLetters.split("-").join("");
   var number = parseInt(parts[2]);
   var hash = parts[3];
   
@@ -1113,9 +1113,29 @@ data.split("\n").forEach((word) => {
   });
   var calculatedHash = letterBins.reverse().join("").substring(0,5);
   
-  if(calculatedHash === hash)
+  if(calculatedHash !== hash)
   {
-    total += number;
+    return;
+  }
+
+  total += number;
+  
+  var allLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+  var shift = number % allLetters.length;
+  
+  var shiftedLetters = originalLetters.split("").map((letter) => {
+    if(letter === "-")
+    {
+      return "-";
+    }
+    var index = allLetters.indexOf(letter);
+    var shifted = (index + shift) % allLetters.length;
+    return allLetters[shifted];
+  }).join("");
+  
+  if(shiftedLetters.indexOf("northpole") >= 0)
+  {
+    console.log(shiftedLetters + number);
   }
 });
 
