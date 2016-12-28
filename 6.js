@@ -633,3 +633,17 @@ console.log(letters.map((letterSet) => {
   }
   return highestLetter;
 }).join(""));
+
+console.log(letters.map((letterSet) => {
+  var lowestLetter = "_";
+  var lowestCount = 1000;
+  for(var letter in letterSet)
+  {
+    if(letterSet[letter] < lowestCount)
+    {
+      lowestCount = letterSet[letter];
+      lowestLetter = letter;
+    }
+  }
+  return lowestLetter;
+}).join(""));
